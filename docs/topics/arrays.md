@@ -3,8 +3,8 @@
 An array is a data structure that holds a fixed number of values of the same type or its subtypes. 
 The most common type of array in Kotlin is the object-type array, represented by the [`Array`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/) class.
 
-> If you use primitives in an object-type array, this has a performance impact because your primitives are boxed into objects.
-> To avoid boxing overhead, use [primitive-type arrays](#primitive-type-arrays) instead.
+> If you use primitives in an object-type array, this has a performance impact because your primitives are [boxed](https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html)
+> into objects. To avoid boxing overhead, use [primitive-type arrays](#primitive-type-arrays) instead.
 >
 {type="note"}
 
@@ -42,8 +42,12 @@ For more information about collections, see [Collections overview](collections-o
 
 ## Create arrays
 
-To create an array, use the [`arrayOf()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of.html) function 
-and pass the item values to it:
+To create arrays in Kotlin, you can use:
+* special functions. For example: [`arrayOf()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of.html) or [`arrayOfNulls()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of-nulls.html#kotlin$arrayOfNulls(kotlin.Int)) functions.
+* the array constructor.
+
+This example uses the [`arrayOf()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of.html) function 
+and passes item values to it:
 
 ```kotlin
 fun main() {
@@ -57,12 +61,8 @@ fun main() {
 ```
 {kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-simple-array-kotlin"}
 
-> When creating arrays, you can use a [trailing comma](coding-conventions.md#trailing-commas).
->
-{type="note"}
-
-Alternatively, use the [`arrayOfNulls()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of-nulls.html#kotlin$arrayOfNulls(kotlin.Int))
-function to create an array of a given size filled with `null` elements.
+This example uses the [`arrayOfNulls()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of-nulls.html#kotlin$arrayOfNulls(kotlin.Int))
+function to create an array of a given size filled with `null` elements:
 
 ```kotlin
 fun main() {
@@ -76,8 +76,7 @@ fun main() {
 ```
 {kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-null-array-kotlin"}
 
-You can also use the `Array` constructor, which takes the array size and a function that returns values
-for array elements given its index:
+The `Array` constructor takes the array size and a function that returns values for array elements given its index:
 
 ```kotlin
 fun main() {
@@ -171,7 +170,33 @@ Arrays in Kotlin are _invariant_. This means that Kotlin doesn't allow you to as
 to an `Array<Any>` to prevent a possible runtime failure. Instead, you can use `Array<out Any>`. For more information,
 see [Type Projections](generics.md#type-projections).
 
-## Compare arrays
+## Pass variable number of arguments to a function
+
+In some cases it is useful to be able to pass a variable number of arguments to a function without having to define the
+number of arguments in advance. In Kotlin, you can use the [`vararg`](functions.md#variable-number-of-arguments-varargs)
+parameter for this. To pass an array containing a variable number of arguments to a function, use the _spread_ operator
+(`*`). The spread operator passes each element of the array as individual arguments to your chosen function:
+
+```kotlin
+fun main() {
+    val lettersArray = arrayOf("c", "d")
+    printAllStrings("a", "b", *lettersArray)
+    // abcd
+}
+
+fun printAllStrings(vararg strings: String) {
+    for (string in strings) {
+        print(string)
+    }
+}
+```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-vararg-array-kotlin"}
+
+For more information, see [Variable number of arguments (varargs)](functions.md#variable-number-of-arguments-varargs).
+
+## Work with arrays
+
+### Compare arrays
 
 To compare whether two arrays have the same elements in the same order, use the [`.contentEquals()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-equals.html)
 and [`.contentDeepEquals()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-deep-equals.html) 
@@ -204,12 +229,12 @@ fun main() {
 > 
 {type="warning"}
 
-## Transform arrays
+### Transform arrays
 
 Kotlin has many useful functions to transform arrays. This document highlights a few but this isn't an 
 exhaustive list. For the full list of functions, see our [API reference](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/).
 
-### Sum
+#### Sum
 
 To return the sum of all elements in an array, use the [`.sum()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/sum.html)
 function:
@@ -231,7 +256,7 @@ fun main() {
 >
 {type="note"}
 
-### Shuffle
+#### Shuffle
 
 To randomly shuffle the elements in an array, use the [`.shuffle()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/shuffle.html)
 function:
@@ -253,35 +278,11 @@ fun main() {
 ```
 {kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-shuffle-array-kotlin"}
 
-## Pass variable number of arguments to a function
-
-In some cases it is useful to be able to pass a variable number of arguments to a function without having to define the 
-number of arguments in advance. In Kotlin, you can use the [`vararg`](functions.md#variable-number-of-arguments-varargs)
-parameter for this. To pass an array containing a variable number of arguments to a function, use the _spread_ operator 
-(`*`). The spread operator passes each element of the array as individual arguments to your chosen function:
-
-```kotlin
-fun main() {
-    val lettersArray = arrayOf("c", "d")
-    printAllStrings("a", "b", *lettersArray)
-    // abcd
-}
-
-fun printAllStrings(vararg strings: String) {
-    for (string in strings) {
-        print(string)
-    }
-}
-```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-vararg-array-kotlin"}
-
-For more information, see [Variable number of arguments (varargs)](functions.md#variable-number-of-arguments-varargs).
-
-## Convert to collection
+### Convert arrays to collections
 
 Arrays can be converted to [collections](collections-overview.md).
 
-### Convert to List or Set
+#### Convert to List or Set
 
 To convert an array to a `List` or `Set`, use the [`.toList()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/to-list.html)
 and [`.toSet()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/to-set.html) functions.
@@ -303,7 +304,7 @@ fun main() {
 ```
 {kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-convert-list-set-kotlin"}
 
-### Convert to Map
+#### Convert to Map
 
 To convert an array to a `map`, use the [`.toMap()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/to-map.html)
 function. 
@@ -427,3 +428,4 @@ fun main() {
 
 * To learn more about why we recommend using collections for most use cases, read our [Collections overview](collections-overview.md).
 * Learn about other [basic types](basic-types.md).
+* If you are a Java developer, read our Java to Kotlin migration guide for [Collections](java-to-kotlin-collections-guide.md).
