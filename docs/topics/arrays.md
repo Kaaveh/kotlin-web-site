@@ -14,29 +14,28 @@ Use arrays in Kotlin when you have specialized low-level requirements that you n
 performance requirements beyond what is needed for regular applications, or you need to build custom data structures. If
 you don't have these sorts of restrictions, use [collections](collections-overview.md) instead.
 
-Collections have many benefits compared to arrays. Whereas arrays are always mutable, collections can be read-only. This
-gives you more control and allows you to write robust code that has a clear intent.
+Collections have the following benefits compared to arrays:
+* They can be read-only, which gives you more control and allows you to write robust code that has a clear intent.
+* They are designed to make it easy to add or remove elements. In comparison, arrays are fixed in size. The only way to 
+add or remove elements from an array is to create a new array each time, which is very inefficient:
 
-In addition, arrays are fixed in size. The only way to add or remove elements from an array is to create a new array each
-time, which is very inefficient. In comparison, collections are designed to make it easy to add or remove elements:
+  ```kotlin
+  fun main() {
+  //sampleStart
+      var riversArray = arrayOf("Nile", "Amazon", "Yangtze")
 
-```kotlin
-fun main() {
-//sampleStart
-    var riversArray = arrayOf("Nile", "Amazon", "Yangtze")
+      // Using the += assignment operation creates a new riversArray,
+      // copies over the original elements and adds "Mississippi"
+      riversArray += "Mississippi"
+      println(riversArray.joinToString())
+      // Nile, Amazon, Yangtze, Mississippi
+  //sampleEnd
+  }
+  ```
+  {kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-rivers-array-kotlin"}
 
-    // Using the += assignment operation creates a new riversArray,
-    // copies over the original elements and adds "Mississippi"
-    riversArray += "Mississippi"
-    println(riversArray.joinToString())
-    // Nile, Amazon, Yangtze, Mississippi
-//sampleEnd
-}
-```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-rivers-array-kotlin"}
-
-Finally, to compare if two arrays are structurally equal you can't use the equality operator (`==`). You have to use a 
-special function, which you can read more about in [Compare arrays](#compare-arrays).
+* You can use the equality operator (`==`) to check if collections are structurally equal. You can't use this operator
+for arrays. Instead, you have to use a special function, which you can read more about in [Compare arrays](#compare-arrays).
 
 For more information about collections, see [Collections overview](collections-overview.md).
 
