@@ -15,8 +15,8 @@ performance requirements beyond what is needed for regular applications, or you 
 you don't have these sorts of restrictions, use [collections](collections-overview.md) instead.
 
 Collections have the following benefits compared to arrays:
-* They can be read-only, which gives you more control and allows you to write robust code that has a clear intent.
-* They are designed to make it easy to add or remove elements. In comparison, arrays are fixed in size. The only way to 
+* Collections can be read-only, which gives you more control and allows you to write robust code that has a clear intent.
+* It is easy to add or remove elements from collections. In comparison, arrays are fixed in size. The only way to 
 add or remove elements from an array is to create a new array each time, which is very inefficient:
 
   ```kotlin
@@ -42,8 +42,9 @@ For more information about collections, see [Collections overview](collections-o
 ## Create arrays
 
 To create arrays in Kotlin, you can use:
-* special functions. For example: [`arrayOf()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of.html) or [`arrayOfNulls()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of-nulls.html#kotlin$arrayOfNulls(kotlin.Int)) functions.
-* the array constructor.
+* functions, such as [`arrayOf()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of.html), [`arrayOfNulls()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of-nulls.html#kotlin$arrayOfNulls(kotlin.Int)) 
+or [`emptyArray()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/empty-array.html).
+* the `Array` constructor.
 
 This example uses the [`arrayOf()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of.html) function 
 and passes item values to it:
@@ -75,6 +76,25 @@ fun main() {
 ```
 {kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-null-array-kotlin"}
 
+This example uses the [`emptyArray()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/empty-array.html) function to 
+create an empty array :
+
+```kotlin
+    var exampleArray = emptyArray<String>()
+```
+
+> You can specify the type of the empty array on the left-hand or right-hand side of the assignment due to Kotlin's type
+> inference.
+>
+> For example:
+> ```Kotlin
+> var exampleArray = emptyArray<String>()
+> 
+> var exampleArray: Array<String> = emptyArray()
+>```
+>
+{type="note"}
+
 The `Array` constructor takes the array size and a function that returns values for array elements given its index:
 
 ```kotlin
@@ -98,27 +118,7 @@ fun main() {
 >
 {type="note"}
 
-### Empty arrays
-
-To create an empty array, use an [`emptyArray()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/empty-array.html):
-
-```kotlin
-    var exampleArray = emptyArray<String>()
-```
-
-> You can specify the type of the empty array on the left-hand or right-hand side of the assignment due to Kotlin's type
-> inference.
-> 
-> For example:
-> ```Kotlin
-> var exampleArray = emptyArray<String>()
-> 
-> var exampleArray: Array<String> = emptyArray()
->```
->
-{type="note"}
-
-### Multidimensional arrays
+### Nested arrays
 
 Arrays can be nested within each other to create multidimensional arrays:
 
@@ -169,10 +169,15 @@ Arrays in Kotlin are _invariant_. This means that Kotlin doesn't allow you to as
 to an `Array<Any>` to prevent a possible runtime failure. Instead, you can use `Array<out Any>`. For more information,
 see [Type Projections](generics.md#type-projections).
 
-## Pass variable number of arguments to a function
+## Work with arrays
+
+In Kotlin, you can work with arrays by using them to pass a variable number of arguments to a function or perform operations
+on the arrays themselves. For example, comparing arrays, transforming their contents or converting them to collections.
+
+### Pass variable number of arguments to a function
 
 In Kotlin, you can pass a variable number of arguments to a function via the [`vararg`](functions.md#variable-number-of-arguments-varargs)
-parameter. This is useful when you don't know the number of arguments in advance, like when formatting a message or 
+parameter. This is useful when you don't know the number of arguments in advance, like when formatting a message or
 creating an SQL query.
 
 To pass an array containing a variable number of arguments to a function, use the _spread_ operator
@@ -194,8 +199,6 @@ fun printAllStrings(vararg strings: String) {
 {kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-vararg-array-kotlin"}
 
 For more information, see [Variable number of arguments (varargs)](functions.md#variable-number-of-arguments-varargs).
-
-## Work with arrays
 
 ### Compare arrays
 
@@ -281,7 +284,8 @@ fun main() {
 
 ### Convert arrays to collections
 
-Arrays can be converted to [collections](collections-overview.md).
+If you work with different APIs where some use arrays and some use collections, then you can convert your arrays to [collections](collections-overview.md)
+and vice versa.
 
 #### Convert to List or Set
 
@@ -348,10 +352,9 @@ side effect of boxing overhead:
 | [`LongArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long-array/) | `long[]`|
 | [`ShortArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-short-array/) | `short[]`|
 
-These classes have no inheritance relation to the `Array` class, but they
-have the same set of functions and properties.
+These classes have no inheritance relation to the `Array` class, but they have the same set of functions and properties.
 
-Here is an example of using a primitive-type array:
+This example creates an instance of  the `IntArray` class:
 
 ```kotlin
 fun main() {
