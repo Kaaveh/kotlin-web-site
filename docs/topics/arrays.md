@@ -172,9 +172,11 @@ see [Type Projections](generics.md#type-projections).
 
 ## Pass variable number of arguments to a function
 
-In some cases it is useful to be able to pass a variable number of arguments to a function without having to define the
-number of arguments in advance. In Kotlin, you can use the [`vararg`](functions.md#variable-number-of-arguments-varargs)
-parameter for this. To pass an array containing a variable number of arguments to a function, use the _spread_ operator
+In Kotlin, you can pass a variable number of arguments to a function via the [`vararg`](functions.md#variable-number-of-arguments-varargs)
+parameter. This is useful when you don't know the number of arguments in advance, like when formatting a message or 
+creating an SQL query.
+
+To pass an array containing a variable number of arguments to a function, use the _spread_ operator
 (`*`). The spread operator passes each element of the array as individual arguments to your chosen function:
 
 ```kotlin
